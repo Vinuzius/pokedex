@@ -26,10 +26,6 @@ A FastAPI + SQLModel + PostgreSQL template application.
    # Edit .env with your PostgreSQL connection details
    ```
 
-4. **Create PostgreSQL database:**
-   ```bash
-   createdb pokedex
-   ```
 
 ## Running the Application
 
@@ -41,6 +37,9 @@ Or with uvicorn directly:
 ```bash
 uvicorn main:app --reload
 ```
+
+Or with Fastapi:
+```bash fastapi run ``
 
 The API will be available at `http://localhost:8000`
 
@@ -54,47 +53,11 @@ The API will be available at `http://localhost:8000`
 - `main.py` - Main FastAPI application and route definitions
 - `models.py` - SQLModel database models and schemas
 - `database.py` - Database configuration and session management
-- `config.py` - Application configuration from environment variables
 - `requirements.txt` - Python dependencies
 
 ## Example API Usage
 
-### Create a Pokémon
-```bash
-curl -X POST http://localhost:8000/pokemon \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Pikachu",
-    "type": "Electric",
-    "hp": 35,
-    "attack": 55,
-    "defense": 40
-  }'
-```
-
-### Get all Pokémon
-```bash
-curl http://localhost:8000/pokemon
-```
-
-### Get a Pokémon by ID
-```bash
-curl http://localhost:8000/pokemon/1
-```
-
-### Update a Pokémon
-```bash
-curl -X PUT http://localhost:8000/pokemon/1 \
-  -H "Content-Type: application/json" \
-  -d '{
-    "attack": 60
-  }'
-```
-
-### Delete a Pokémon
-```bash
-curl -X DELETE http://localhost:8000/pokemon/1
-```
+```configurando ```
 
 ## Environment Variables
 
