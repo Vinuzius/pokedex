@@ -1,37 +1,25 @@
 from typing import Optional
 from sqlmodel import SQLModel, Field
 
+## Exemplo de ENUM
+# class StatusEvento(StrEnum):
+#     ongoing =  'em-andamento'
+#     archived = 'arquivado'
+#     receive = 'receber'
 
-class PokemonBase(SQLModel):
-    """Base Pokémon model with shared fields"""
-    name: str = Field(index=True)
-    type: str
-    hp: int
-    attack: int
-    defense: int
+ 
 
-
-class Pokemon(PokemonBase, table=True):
-    """Pokémon model for database"""
-    __tablename__ = "pokemon"
-    
+class Pokemon(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
+    nome: str = Field(max_length=255, unique=True)
 
 
-class PokemonCreate(PokemonBase):
-    """Schema for creating a Pokémon"""
-    pass
+    #### como fazer um enum, fk e relacionamento
+    # status: StatusEvento = Field(
+    #     sa_column=sa_Enum(StatusEvento, name="status_evento", create_type=False)
+    # )
+    # local_id: int = Field(foreign_key="locais.id")
 
+    # local: "Locais" = Relationship(back_populates="eventoLocal")    
+    # eventoMaterial: list["Evento_Materiais"] = Relationship(back_populates="evento")
 
-class PokemonUpdate(SQLModel):
-    """Schema for updating a Pokémon"""
-    name: Optional[str] = None
-    type: Optional[str] = None
-    hp: Optional[int] = None
-    attack: Optional[int] = None
-    defense: Optional[int] = None
-
-
-class PokemonRead(PokemonBase):
-    """Schema for reading a Pokémon"""
-    id: int

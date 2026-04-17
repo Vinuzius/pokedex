@@ -1,23 +1,17 @@
-from sqlalchemy import create_engine
-from sqlmodel import SQLModel, Session
 from typing import Generator
 
-from config import settings
+from sqlmodel import SQLModel, create_engine
+import os
+from dotenv import load_dotenv
 
-# Create database engine
-engine = create_engine(
-    settings.DATABASE_URL,
-    echo=settings.DEBUG,  # Set to True to see SQL queries
-    future=True,
-)
+# Pega a URL do ambiente, com um valor padrão caso não encontre
+load_dotenv()
+postgresURL = os.environ.get("DATABASE_URL", "postgresql://user:pass@host/db")
+if postgresURL == "postgresql://user:pass@host/db":
+    print("AVISO: Variável DATABASE_URL não encontrada, usando valor padrão.")
 
+# connect_args para mudar o schema que vai ser utilizado
+engine = create_engine(postgresURL, connect_args={"options": "-c search_path=sh"}) # , echo= True
 
 def create_db_and_tables():
-    """Create database tables"""
     SQLModel.metadata.create_all(engine)
-
-
-def get_session() -> Generator[Session, None, None]:
-    """Get database session for dependency injection"""
-    with Session(engine) as session:
-        yield session

@@ -12,6 +12,11 @@ app = FastAPI(
     debug=settings.DEBUG,
 )
 
+def get_session():
+    with Session(engine) as session:
+        yield session
+        pass
+
 
 @app.on_event("startup")
 def on_startup():
@@ -19,94 +24,27 @@ def on_startup():
     create_db_and_tables()
 
 
-# Health check endpoint
-@app.get("/health", tags=["Health"])
-def health_check():
-    """Check API health status"""
-    return {"status": "ok"}
 
+### exemplos pra se basear
+# @app.get("/materiais")
+# def get_materiais(session: Session = Depends(get_session)):
+#     materiais = session.exec(select(Materiais)).all()
+#     return materiais
 
-# CRUD operations for Pokémon
+# @app.post("/materiais", response_model= Materiais) # response vai falar o que deve retornar
+# def create_material(material: Materiais, Session: Session = Depends(get_session)):
+#     Session.add(material)
+#     Session.commit()
+#     Session.refresh(material)
+#     return material
 
-@app.post("/pokemon", response_model=PokemonRead, tags=["Pokémon"])
-def create_pokemon(
-    pokemon: PokemonCreate,
-    session: Session = Depends(get_session),
-):
-    """Create a new Pokémon"""
-    db_pokemon = Pokemon.from_orm(pokemon)
-    session.add(db_pokemon)
-    session.commit()
-    session.refresh(db_pokemon)
-    return db_pokemon
-
-
-@app.get("/pokemon", response_model=list[PokemonRead], tags=["Pokémon"])
-def read_pokemon(
-    skip: int = 0,
-    limit: int = 10,
-    session: Session = Depends(get_session),
-):
-    """Get all Pokémon with pagination"""
-    pokemon = session.exec(
-        select(Pokemon).offset(skip).limit(limit)
-    ).all()
-    return pokemon
-
-
-@app.get("/pokemon/{pokemon_id}", response_model=PokemonRead, tags=["Pokémon"])
-def read_pokemon_by_id(
-    pokemon_id: int,
-    session: Session = Depends(get_session),
-):
-    """Get a Pokémon by ID"""
-    pokemon = session.get(Pokemon, pokemon_id)
-    if not pokemon:
-        raise HTTPException(
-            status_code=404,
-            detail=f"Pokémon with id {pokemon_id} not found",
-        )
-    return pokemon
-
-
-@app.put("/pokemon/{pokemon_id}", response_model=PokemonRead, tags=["Pokémon"])
-def update_pokemon(
-    pokemon_id: int,
-    pokemon_update: PokemonUpdate,
-    session: Session = Depends(get_session),
-):
-    """Update a Pokémon by ID"""
-    db_pokemon = session.get(Pokemon, pokemon_id)
-    if not db_pokemon:
-        raise HTTPException(
-            status_code=404,
-            detail=f"Pokémon with id {pokemon_id} not found",
-        )
-    
-    pokemon_data = pokemon_update.dict(exclude_unset=True)
-    db_pokemon.sqlmodel_update(pokemon_data)
-    session.add(db_pokemon)
-    session.commit()
-    session.refresh(db_pokemon)
-    return db_pokemon
-
-
-@app.delete("/pokemon/{pokemon_id}", tags=["Pokémon"])
-def delete_pokemon(
-    pokemon_id: int,
-    session: Session = Depends(get_session),
-):
-    """Delete a Pokémon by ID"""
-    db_pokemon = session.get(Pokemon, pokemon_id)
-    if not db_pokemon:
-        raise HTTPException(
-            status_code=404,
-            detail=f"Pokémon with id {pokemon_id} not found",
-        )
-    
-    session.delete(db_pokemon)
-    session.commit()
-    return {"deleted": True}
+# @app.post("/locais", response_model= LocalPublic)
+# def create_local(local: LocalCreate, session: Session = Depends(get_session)):
+#     loc = Locais.model_validate(local)
+#     session.add(loc)
+#     session.commit()
+#     session.refresh(loc)
+#     return loc
 
 
 if __name__ == "__main__":
