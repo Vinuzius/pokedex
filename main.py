@@ -2,8 +2,9 @@ from fastapi import FastAPI, HTTPException, Depends
 from sqlmodel import Session, select
 
 from config import settings
-from database import create_db_and_tables, get_session, engine
-from models import Pokemon, PokemonCreate, PokemonUpdate, PokemonRead
+from database import create_db_and_tables, engine
+from models import *
+from dtos import pokemon
 
 # Create FastAPI app
 app = FastAPI(
@@ -24,19 +25,24 @@ def on_startup():
     create_db_and_tables()
 
 
+# Retornar toda a lista
+@app.get("/pokemon")
+def get_pokemons(session: Session = Depends(get_session)):
+    pokemons = session.exec(select(Pokemon)).all()
+    return pokemons
 
-### exemplos pra se basear
-# @app.get("/materiais")
-# def get_materiais(session: Session = Depends(get_session)):
-#     materiais = session.exec(select(Materiais)).all()
-#     return materiais
+# Retorna um pokemon específico por id
+## id vai ser um query param, para  opcional necessita de ' int | None'
+@app.get("/pokemons/{id}", response_model = PokemonComLocaisRead) # response vai especificar o que deve retornar
+def get_single_pokemon(id: int, session: Session = Depends(get_session)):
+    pokemon = session.get(Pokemon, id)
+    
+    if not pokemon: 
+        raise HTTPException(status_code=404, detail="Pokemon not found")
+    
+    return pokemon
 
-# @app.post("/materiais", response_model= Materiais) # response vai falar o que deve retornar
-# def create_material(material: Materiais, Session: Session = Depends(get_session)):
-#     Session.add(material)
-#     Session.commit()
-#     Session.refresh(material)
-#     return material
+
 
 # @app.post("/locais", response_model= LocalPublic)
 # def create_local(local: LocalCreate, session: Session = Depends(get_session)):
