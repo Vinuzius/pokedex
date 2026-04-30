@@ -52,12 +52,20 @@ class LocalRead(SQLModel):
     id: int
     rota: str
 
-# Molde do Pokemon que avisa o FastAPI para incluir a lista de locais
-class PokemonComLocaisRead(SQLModel):
+class PokemonWithLocalRead(SQLModel):
     id: int
     numero_dex: int
     nome: str
     status: str
     locais: list[LocalRead] = [] # A mágica do aninhamento acontece aqui
 
+class PokemonUpdate(SQLModel):
+    status: StatusCaptura | None = None
+    locais: list[int] | None = None  # list of local IDs
+
+class GameWithLocalRead(SQLModel):
+    id: int
+    nome: str
+    geracao: int
+    locais: list[LocalRead] = []
 

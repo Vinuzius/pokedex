@@ -1,14 +1,14 @@
 # Pokedex API Development Checklist
 
 ## 1. Pokémon Domain (`/pokemons`)
-- [ ] `GET /pokemons` - List Pokémon (Filters: `?status=`, `?name=`)
-- [ ] `GET /pokemons/{id}` - Get Pokémon details (include associated locations via join)
-- [ ] `PATCH /pokemons/{id}` - Update specific fields (e.g., capture status)
+- [ X ] `GET /pokemons` - List Pokémon (Filters: `?status=`, `?name=`)
+- [ X ] `GET /pokemons/{id}` - Get Pokémon details (include associated locations via join)
+- [ X ] `PATCH /pokemons/{id}` - Update specific fields (e.g., capture status)
 
 
 ## 2. Games Domain (`/games`)
-- [ ] `GET /games` - List all games (Filters: `?generation=`)
-- [ ] `GET /games/{id}` - Get specific game details
+- [ X ] `GET /games` - List all games (Filters: `?generation=`)
+- [ X ] `GET /games/{id}` - Get specific game details
 
 
 ## 3. Locations & Routes (`/locations`)
