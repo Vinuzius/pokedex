@@ -47,10 +47,20 @@ class Local(SQLModel, table=True):
 
 
 
+class PokemonRead(SQLModel):
+    id: int
+    numero_dex: int
+    nome: str
+    status: str
 
 class LocalRead(SQLModel):
     id: int
     rota: str
+
+class LocalWithPokemonRead(SQLModel):
+    id: int
+    rota: str
+    pokemons: list[PokemonRead] = []
 
 class PokemonWithLocalRead(SQLModel):
     id: int

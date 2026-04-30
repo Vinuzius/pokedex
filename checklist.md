@@ -12,9 +12,9 @@
 
 
 ## 3. Locations & Routes (`/locations`)
-- [ ] `GET /locations` - List locations (Filters: `?id_game=`)
-- [ ] `POST /locations` - Create a new route
-- [ ] `GET /locations/{id}/pokemons` - List all Pokémon that appear in a specific location
+- [ X ] `GET /locations` - List locations (Filters: `?id_game=`)
+- [ X ] `POST /locations` - Create a new route
+- [ X ] `GET /locations/{id}/pokemons` - List all Pokémon that appear in a specific location
 
 
 ## 4. Encounters (`/encounters`)

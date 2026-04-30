@@ -94,6 +94,53 @@ def get_single_game(id: int, session: Session = Depends(get_session)):
 
     return game
 
+# Listar todos locais e filtro de um jogo específico
+@app.get("/local/", response_model=list[LocalRead])
+def get_local(game_id: int | None = None,
+               session: Session = Depends(get_session)):
+    query = select(Local)
+
+    if game_id:
+        query = query.where(Local.id_game == game_id)
+
+    locais = session.exec(query).all()
+
+    return locais
+
+# Criar um novo local dentro de um jogo
+@app.post("/local/")
+def create_local(new_local: Local, session: Session = Depends(get_session)):
+
+    #Verifica se o local já existe
+    query_verificacao = select(Local).where(
+        Local.id_game == new_local.id_game,
+        Local.rota == new_local.rota
+    )
+    local_existente = session.exec(query_verificacao).first()
+    if local_existente:
+        raise HTTPException(
+            status_code=409,
+            detail=f"A '{new_local.rota}' já está cadastrada para o jogo de ID {new_local.id_game}."
+        )
+    
+    #Caso não exista, pode ser adicionado
+    session.add(new_local)
+    session.commit()
+    session.refresh(new_local)
+    
+    return new_local
+
+# Lista todos pokemons de um determinado local
+@app.get("/locations/{local_id}/pokemons", response_model = LocalWithPokemonRead)
+def show_local_pokemon(local_id: int,  session: Session = Depends(get_session)):
+
+    local = session.get(Local,local_id)
+    
+    if not local: 
+        raise HTTPException(status_code=404, detail="Local not found")
+
+    return local    
+
 if __name__ == "__main__":
     import uvicorn
     
