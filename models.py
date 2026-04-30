@@ -45,37 +45,3 @@ class Local(SQLModel, table=True):
     game: Game | None = Relationship(back_populates="locais")
     pokemons: list[Pokemon] = Relationship(back_populates="locais", link_model=PokemonLocal)
 
-
-
-class PokemonRead(SQLModel):
-    id: int
-    numero_dex: int
-    nome: str
-    status: str
-
-class LocalRead(SQLModel):
-    id: int
-    rota: str
-
-class LocalWithPokemonRead(SQLModel):
-    id: int
-    rota: str
-    pokemons: list[PokemonRead] = []
-
-class PokemonWithLocalRead(SQLModel):
-    id: int
-    numero_dex: int
-    nome: str
-    status: str
-    locais: list[LocalRead] = [] # A mágica do aninhamento acontece aqui
-
-class PokemonUpdate(SQLModel):
-    status: StatusCaptura | None = None
-    locais: list[int] | None = None  # list of local IDs
-
-class GameWithLocalRead(SQLModel):
-    id: int
-    nome: str
-    geracao: int
-    locais: list[LocalRead] = []
-

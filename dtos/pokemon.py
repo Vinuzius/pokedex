@@ -1,25 +1,29 @@
-# usado para garantir que vai ter os dados certos no ednpoint
+# Pokemon DTOs - used to ensure correct data in endpoints
 
 from sqlmodel import Field, SQLModel
-
-class PokemonCreate(SQLModel):
-    nome: str = Field(max_length=255)
-    endereco: str
-
-class PokemonPublic(SQLModel):
-    id: int
-    nome: str = Field(max_length=255)
-    endereco: str
+from models import StatusCaptura
 
 
 class LocalRead(SQLModel):
     id: int
     rota: str
 
-# Molde do Pokemon que avisa o FastAPI para incluir a lista de locais
-class PokemonComLocaisRead(SQLModel):
+
+class PokemonRead(SQLModel):
     id: int
     numero_dex: int
     nome: str
     status: str
-    locais: list[LocalRead] = [] # A mágica do aninhamento acontece aqui
+
+
+class PokemonWithLocalRead(SQLModel):
+    id: int
+    numero_dex: int
+    nome: str
+    status: str
+    locais: list[LocalRead] = []
+
+
+class PokemonUpdate(SQLModel):
+    status: StatusCaptura | None = None
+    locais: list[int] | None = None  # list of local IDs
