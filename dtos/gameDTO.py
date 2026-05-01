@@ -1,7 +1,7 @@
 # Game DTOs - used to ensure correct data in endpoints
 
 from sqlmodel import SQLModel
-from dtos.local import LocalRead
+from dtos.localDTO import LocalRead
 
 
 class GameWithLocalRead(SQLModel):

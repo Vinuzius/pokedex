@@ -18,9 +18,11 @@
 
 
 ## 4. Encounters (`/encounters`)
-- [ ] `POST /encounters` - Link a Pokémon to a location (Payload: `id_pokemon`, `id_local`, `description`)
-- [ ] `DELETE /encounters/{id_pokemon}/{id_local}` - Remove a specific encounter association
+- [ X ] `POST /encounters` - Link a Pokémon to a location (Payload: `id_pokemon`, `id_local`, `description`)
+- [ X ] `DELETE /encounters/{id_pokemon}/{id_local}` - Remove a specific encounter association
 
 
 ## 5. Statistics (`/statistics`)
-- [ ] `GET /statistics/completion` - Return consolidated data (total Pokémon, count by status, overall completion %)
+- [ X ] `GET /statistics/completion` - Return consolidated data (total Pokémon, count by status, overall completion %)
+
+- [] - Get completion by generation

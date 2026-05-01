@@ -2,7 +2,8 @@ from fastapi import FastAPI
 
 from config import settings
 from database import create_db_and_tables
-from routers import pokemon, local, game
+from routers import pokemon, local, game, encounter, statistics
+
 
 # Create FastAPI app
 app = FastAPI(
@@ -22,6 +23,8 @@ def on_startup():
 app.include_router(pokemon.router)
 app.include_router(local.router)
 app.include_router(game.router)
+app.include_router(encounter.router)
+app.include_router(statistics.router)
 
 
 if __name__ == "__main__":

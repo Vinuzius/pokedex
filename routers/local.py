@@ -4,7 +4,7 @@ from fastapi import APIRouter, HTTPException, Depends
 from sqlmodel import Session, select
 
 from models import Local
-from dtos.local import LocalRead, LocalWithPokemonRead
+from dtos.localDTO import LocalRead, LocalWithPokemonRead
 from dependencies import get_session
 
 router = APIRouter(tags=["local"])

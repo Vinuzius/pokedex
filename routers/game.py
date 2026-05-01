@@ -4,7 +4,7 @@ from fastapi import APIRouter, HTTPException, Depends
 from sqlmodel import Session, select
 
 from models import Game
-from dtos.game import GameWithLocalRead
+from dtos.gameDTO import GameWithLocalRead
 from dependencies import get_session
 
 router = APIRouter(prefix="/game", tags=["game"])
